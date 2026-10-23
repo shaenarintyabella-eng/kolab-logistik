@@ -1,85 +1,170 @@
-import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, Box, ArrowDownToLine, ArrowUpFromLine, Warehouse, Users, FileText, Settings, Search, Bell, LogOut } from 'lucide-react';
+import { Outlet, NavLink, useNavigate, useLocation } from 'react-router-dom';
+import { 
+  LayoutDashboard, 
+  Package, 
+  ScanLine, 
+  UtensilsCrossed, 
+  History, 
+  CheckCircle2, 
+  Warehouse, 
+  Truck, 
+  LogOut, 
+  Bell, 
+  User,
+  Check,
+  AlertCircle,
+  Info
+} from 'lucide-react';
 import { useAppContext } from '../context/AppContext';
 
-const menuItems = [
-  { path: '/', name: 'Dashboard', icon: LayoutDashboard },
-  { path: '/barang', name: 'Barang', icon: Box },
-  { path: '/barang-masuk', name: 'Barang Masuk', icon: ArrowDownToLine },
-  { path: '/barang-keluar', name: 'Barang Keluar', icon: ArrowUpFromLine },
-  { path: '/gudang', name: 'Gudang', icon: Warehouse },
-  { path: '/supplier', name: 'Supplier', icon: Users },
-  { path: '/laporan', name: 'Laporan', icon: FileText },
-];
-
 export default function Layout() {
-  const location = useLocation();
-  const { data, logout } = useAppContext();
+  const { user, logout, notification, clearNotification } = useAppContext();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleLogout = () => {
     logout();
     navigate('/login');
   };
 
+  const navItems = [
+    { path: '/ringkasan', label: 'Ringkasan', icon: LayoutDashboard },
+    { path: '/barang', label: 'Master Barang', icon: Package },
+    { path: '/input-scan', label: 'Input & Scan', icon: ScanLine },
+    { path: '/resep-menu', label: 'Resep Menu', icon: UtensilsCrossed },
+    { path: '/riwayat-mutasi', label: 'Riwayat Mutasi', icon: History },
+    { path: '/ketersediaan', label: 'Ketersediaan Menu', icon: CheckCircle2 },
+  ];
+
+  const subItems = [
+    { path: '/gudang', label: 'Master Gudang', icon: Warehouse },
+    { path: '/supplier', label: 'Master Supplier', icon: Truck },
+  ];
+
   return (
     <div className="app-container">
-      {/* Sidebar */}
-      <div className="sidebar" style={{ padding: '2rem 1rem' }}>
-        <div style={{ marginBottom: '2rem', padding: '0 1rem' }}>
-          <h1 style={{ color: 'var(--primary-orange)', fontSize: '2rem', fontWeight: 'bold' }}>Ko+Lab</h1>
+      {/* Toast Notification */}
+      {notification && (
+        <div className="toast-container">
+          <div className={`toast ${notification.type}`}>
+            {notification.type === 'success' && <Check size={18} color="#16A34A" />}
+            {notification.type === 'error' && <AlertCircle size={18} color="#DC2626" />}
+            {notification.type === 'info' && <Info size={18} color="#2563EB" />}
+            <span>{notification.message}</span>
+            <button 
+              onClick={clearNotification}
+              style={{ color: '#94A3B8', marginLeft: '0.5rem', cursor: 'pointer', fontSize: '1rem' }}
+            >
+              ×
+            </button>
+          </div>
         </div>
-        <nav style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', flex: 1 }}>
-          {menuItems.map(item => {
-            const isActive = location.pathname === item.path;
+      )}
+
+      {/* Sidebar */}
+      <aside className="sidebar">
+        <div className="sidebar-brand">
+          <div className="brand-badge">K+</div>
+          <div className="brand-text">
+            <h1>Ko+Lab Logistik</h1>
+            <span>Retail & F&B Operation</span>
+          </div>
+        </div>
+
+        <nav className="sidebar-nav">
+          <div style={{ padding: '0.5rem 0.75rem', fontSize: '0.7rem', fontWeight: 700, color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+            Menu Utama
+          </div>
+          {navItems.map((item) => {
             const Icon = item.icon;
+            const isActive = location.pathname === item.path || (item.path === '/ringkasan' && location.pathname === '/');
             return (
-              <Link key={item.path} to={item.path} style={{
-                display: 'flex', alignItems: 'center', gap: '1rem', padding: '0.75rem 1rem',
-                borderRadius: '0.5rem',
-                backgroundColor: isActive ? 'rgba(255,138,0,0.1)' : 'transparent',
-                color: isActive ? 'var(--primary-orange)' : 'var(--text-gray)',
-                fontWeight: isActive ? '600' : '500'
-              }}>
-                <Icon size={20} />
-                {item.name}
-              </Link>
-            )
+              <NavLink
+                key={item.path}
+                to={item.path}
+                className={`nav-item ${isActive ? 'active' : ''}`}
+              >
+                <Icon size={19} />
+                <span>{item.label}</span>
+              </NavLink>
+            );
+          })}
+
+          <div style={{ padding: '1rem 0.75rem 0.5rem', fontSize: '0.7rem', fontWeight: 700, color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+            Master Data
+          </div>
+          {subItems.map((item) => {
+            const Icon = item.icon;
+            const isActive = location.pathname === item.path;
+            return (
+              <NavLink
+                key={item.path}
+                to={item.path}
+                className={`nav-item ${isActive ? 'active' : ''}`}
+              >
+                <Icon size={18} />
+                <span>{item.label}</span>
+              </NavLink>
+            );
           })}
         </nav>
-      </div>
 
-      {/* Main Content */}
+        <div className="sidebar-footer">
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+              <div style={{ 
+                width: 36, height: 36, borderRadius: '50%', background: 'var(--navy-surface)', 
+                display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--primary-orange)',
+                border: '1px solid rgba(255, 255, 255, 0.1)' 
+              }}>
+                <User size={18} />
+              </div>
+              <div>
+                <div style={{ fontSize: '0.85rem', fontWeight: 600, color: 'white' }}>
+                  {user?.nama_lengkap || 'Administrator'}
+                </div>
+                <div style={{ fontSize: '0.7rem', color: '#94A3B8', textTransform: 'capitalize' }}>
+                  {user?.role || 'Admin Logistik'}
+                </div>
+              </div>
+            </div>
+            <button 
+              onClick={handleLogout} 
+              title="Keluar" 
+              style={{ color: '#94A3B8', padding: '0.4rem', borderRadius: '0.375rem' }}
+              onMouseEnter={(e) => e.currentTarget.style.color = '#EF4444'}
+              onMouseLeave={(e) => e.currentTarget.style.color = '#94A3B8'}
+            >
+              <LogOut size={18} />
+            </button>
+          </div>
+        </div>
+      </aside>
+
+      {/* Main Content Area */}
       <div className="main-content">
         <header className="header">
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-            <span style={{ fontSize: '1.2rem', fontWeight: '500' }}>Logistik Retail & F&B</span>
-          </div>
-          
-          <div className="search-bar">
-            <Search size={18} />
-            <input type="text" placeholder="Cari barang, kode, atau supplier..." />
+          <div className="header-title">
+            <h2>Sistem Inventori Terpadu</h2>
+            <span className="header-badge">MySQL Live</span>
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
-            <div style={{ position: 'relative', cursor: 'pointer' }}>
-              <Bell size={24} />
-              <span style={{
-                position: 'absolute', top: -5, right: -5,
-                background: 'white', color: 'var(--primary-orange)',
-                borderRadius: '50%', width: 18, height: 18,
-                fontSize: 10, display: 'flex', alignItems: 'center', justifyContent: 'center',
-                fontWeight: 'bold'
-              }}>2</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem' }}>
+            <div style={{ 
+              display: 'flex', alignItems: 'center', gap: '0.5rem', 
+              fontSize: '0.825rem', color: 'var(--text-muted)', background: '#F1F5F9',
+              padding: '0.35rem 0.75rem', borderRadius: '9999px' 
+            }}>
+              <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#16A34A' }}></span>
+              Server Aktif (Port 5000)
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}>
-              <div style={{ width: 32, height: 32, borderRadius: '50%', background: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <Users size={18} color="var(--primary-orange)" />
-              </div>
-              <span style={{ fontWeight: '500' }}>Admin</span>
-            </div>
-            <button onClick={handleLogout} style={{ color: 'white' }} title="Logout">
-              <LogOut size={20} />
+
+            <button 
+              onClick={handleLogout} 
+              className="btn btn-outline btn-sm"
+              style={{ gap: '0.35rem' }}
+            >
+              <LogOut size={15} /> Keluar
             </button>
           </div>
         </header>
