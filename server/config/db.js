@@ -13,7 +13,7 @@ const dbPool = mysql.createPool({
   host: process.env.DB_HOST || 'localhost',
   user: process.env.DB_USER || 'root',
   password: process.env.DB_PASSWORD || '',
-  database: process.env.DB_NAME || 'kolab_logistik',
+  database: process.env.DB_NAME || 'ngola_geasture_adm',
   port: Number(process.env.DB_PORT) || 3306,
   waitForConnections: true,
   connectionLimit: 15,
@@ -26,7 +26,7 @@ const dbPool = mysql.createPool({
 export async function testDbConnection() {
   try {
     const connection = await dbPool.getConnection();
-    console.log('✅ Berhasil terhubung ke database MySQL:', process.env.DB_NAME || 'kolab_logistik');
+    console.log('✅ Berhasil terhubung ke database MySQL:', process.env.DB_NAME || 'ngola_geasture_adm');
     connection.release();
     return true;
   } catch (error) {

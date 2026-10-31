@@ -1,4 +1,4 @@
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
 
 async function request(endpoint, options = {}) {
   const url = `${API_BASE_URL}${endpoint}`;
@@ -29,7 +29,7 @@ async function request(endpoint, options = {}) {
 
 export const api = {
   // Auth
-  login: (credentials) => request('/auth/login', { method: 'POST', body: JSON.stringify(credentials) }),
+  login: (credentials) => request('/logistik/auth/login', { method: 'POST', body: JSON.stringify(credentials) }),
 
   // Dashboard / Ringkasan
   getDashboardSummary: () => request('/dashboard/summary'),
@@ -56,7 +56,7 @@ export const api = {
     return request(`/movements/export-csv?${query}`);
   },
 
-  // Resep Menu
+  // Resep Menu & Forecasting Manufaktur
   getMenus: (params = {}) => {
     const query = new URLSearchParams(params).toString();
     return request(`/menus?${query}`);
@@ -69,6 +69,8 @@ export const api = {
     body: JSON.stringify({ status_manual })
   }),
   deleteMenu: (id) => request(`/menus/${id}`, { method: 'DELETE' }),
+  forecastMenu: (id, porsi = 1) => request(`/menus/${id}/forecast?porsi=${porsi}`),
+  simulateManufacturing: (data) => request('/menus/forecast', { method: 'POST', body: JSON.stringify(data) }),
 
   // Master Data (Kategori, Gudang, Supplier)
   getCategories: () => request('/master/categories'),

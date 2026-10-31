@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import path from 'path';
+import fs from 'fs';
 import dotenv from 'dotenv';
 import { fileURLToPath } from 'url';
 
@@ -50,6 +51,22 @@ app.use('/api/movements', movementRoutes);
 app.use('/api/menus', menuRoutes);
 app.use('/api/dashboard', dashboardRoutes);
 app.use('/api/master', masterRoutes);
+
+// Static dist serving & SPA fallback for Kroombox deployment
+const distPath = path.resolve(__dirname, '../dist');
+if (fs.existsSync(distPath)) {
+  app.use(express.static(distPath));
+  app.get('*', (req, res, next) => {
+    if (req.path.startsWith('/api/') || req.path.startsWith('/uploads/')) {
+      return next();
+    }
+    const indexPath = path.join(distPath, 'index.html');
+    if (fs.existsSync(indexPath)) {
+      return res.sendFile(indexPath);
+    }
+    next();
+  });
+}
 
 // Global Error Handler
 app.use((err, req, res, next) => {
