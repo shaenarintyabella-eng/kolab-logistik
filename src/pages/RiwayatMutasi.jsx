@@ -357,7 +357,7 @@ export default function RiwayatMutasi() {
                   <strong>Lampiran Foto:</strong>
                   <div style={{ marginTop: '0.5rem', width: '100%', maxHeight: '200px', overflow: 'hidden', borderRadius: 'var(--radius-md)' }}>
                     <img 
-                      src={`http://localhost:5000${selectedTrx.lampiran_foto}`} 
+                      src={selectedTrx.lampiran_foto.startsWith('http') ? selectedTrx.lampiran_foto : `${selectedTrx.lampiran_foto}`} 
                       alt="Lampiran" 
                       style={{ width: '100%', height: 'auto', objectFit: 'contain' }} 
                     />
