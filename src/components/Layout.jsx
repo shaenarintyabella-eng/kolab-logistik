@@ -13,7 +13,9 @@ import {
   User,
   Check,
   AlertCircle,
-  Info
+  Info,
+  Calculator,
+  ExternalLink
 } from 'lucide-react';
 import { useAppContext } from '../context/AppContext';
 
@@ -107,6 +109,24 @@ export default function Layout() {
               </NavLink>
             );
           })}
+
+          <div style={{ padding: '1rem 0.75rem 0.5rem', fontSize: '0.7rem', fontWeight: 700, color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+            Ekosistem
+          </div>
+          <a
+            href="https://hpp.ngolab.online"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="nav-item"
+            style={{ textDecoration: 'none' }}
+            title="Kalkulator HPP & Finansial"
+          >
+            <Calculator size={18} color="#F97316" />
+            <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
+              Kalkulator HPP
+              <ExternalLink size={14} style={{ opacity: 0.6 }} />
+            </span>
+          </a>
         </nav>
 
         <div className="sidebar-footer">
