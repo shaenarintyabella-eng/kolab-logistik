@@ -1,11 +1,11 @@
--- Data Seed Awal untuk Kolab Logistik Retail & F&B
-USE `kolab_logistik`;
+-- Data Seed Awal untuk Kolab Logistik Retail & F&B Terintegrasi
+USE `ngola_geasture_adm`;
 
--- 1. Seed Users (admin / admin123)
-INSERT INTO `users` (`id`, `username`, `password`, `nama_lengkap`, `role`) VALUES
-(1, 'admin', 'admin123', 'Administrator Ko+Lab', 'admin'),
-(2, 'staff_gudang', 'staff123', 'Staff Logistik', 'gudang')
-ON DUPLICATE KEY UPDATE `nama_lengkap` = VALUES(`nama_lengkap`);
+-- 1. Seed Staff Logistik (admin & staff_gudang)
+INSERT INTO `staff` (`id`, `name`, `role`, `email`, `phone`, `password_hash`, `password_plain`, `status`) VALUES
+('S991', 'Administrator Ko+Lab', 'Super Admin', 'admin@kolab.com', '0811111199', 'admin123', 'admin123', 'active'),
+('S992', 'Staff Logistik', 'Staff', 'staff_gudang@kolab.com', '0811111198', 'staff123', 'staff123', 'active')
+ON DUPLICATE KEY UPDATE `name` = VALUES(`name`), `password_plain` = VALUES(`password_plain`);
 
 -- 2. Seed Categories
 INSERT INTO `categories` (`id`, `nama`, `tipe`) VALUES

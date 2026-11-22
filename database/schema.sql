@@ -1,8 +1,9 @@
--- Database: kolab_logistik
--- Dibuat untuk Aplikasi Inventori dan Logistik Ko+Lab Retail & F&B
+-- Database: ngola_geasture_adm (Terpusat)
+-- Dibuat untuk Aplikasi Inventori dan Logistik Ko+Lab Retail & F&B Terintegrasi
+-- Terhubung langsung ke Master Database backend_ngolab
 
-CREATE DATABASE IF NOT EXISTS `kolab_logistik` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE `kolab_logistik`;
+CREATE DATABASE IF NOT EXISTS `ngola_geasture_adm` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE `ngola_geasture_adm`;
 
 -- 1. Tabel users
 CREATE TABLE IF NOT EXISTS `users` (

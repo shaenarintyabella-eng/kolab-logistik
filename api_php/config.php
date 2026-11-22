@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 }
 
 $host = 'localhost';
-$db   = 'kolab_logistik';
+$db   = 'ngola_geasture_adm';
 $user = 'root';
 $pass = '';
 $charset = 'utf8mb4';

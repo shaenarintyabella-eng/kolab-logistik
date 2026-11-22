@@ -64,17 +64,15 @@ Aplikasi ini dibangun menggunakan arsitektur modern full-stack:
 
 ## 📦 Panduan Instalasi & Konfigurasi
 
-### 1. Konfigurasi Database MySQL via phpMyAdmin
+### 1. Konfigurasi Database Terpusat (`ngola_geasture_adm`)
 
-1. Buka browser dan akses phpMyAdmin: `http://localhost/phpmyadmin`
-2. Buat database baru bernama: `kolab_logistik` dengan collation `utf8mb4_unicode_ci`.
-3. Klik tab **Import**, pilih file:
-   * [database/schema.sql](file:///c:/xampp8.2/htdocs/kolab-logistik/database/schema.sql) lalu klik **Import**.
-   * [database/seed.sql](file:///c:/xampp8.2/htdocs/kolab-logistik/database/seed.sql) lalu klik **Import**.
-4. Atau jalankan langsung via terminal MySQL XAMPP:
+Aplikasi Ko+Lab Logistik terintegrasi langsung dengan database terpusat **`ngola_geasture_adm`** yang sama dengan `backend_ngolab`, `PointLab`, dan `NGOLAB-GAMI`:
+1. Database terpusat bernama: `ngola_geasture_adm` dengan collation `utf8mb4_unicode_ci`.
+2. Seluruh tabel inventori (`items`, `categories`, `warehouses`, `suppliers`, `stock_movements`, `logistik_menus`, `menu_ingredients`) dan staf (`staff`) berada di dalam database `ngola_geasture_adm`.
+3. Skema dan seed otomatis termigrasi pada master server `backend_ngolab`. Jika ingin mengimpor secara manual:
    ```bash
-   c:\xampp8.2\mysql\bin\mysql.exe -u root -e "source c:/xampp8.2/htdocs/kolab-logistik/database/schema.sql"
-   c:\xampp8.2\mysql\bin\mysql.exe -u root -e "source c:/xampp8.2/htdocs/kolab-logistik/database/seed.sql"
+   mysql -u root -p ngola_geasture_adm < database/schema.sql
+   mysql -u root -p ngola_geasture_adm < database/seed.sql
    ```
 
 ### 2. Konfigurasi Environment Variable (`.env`)
